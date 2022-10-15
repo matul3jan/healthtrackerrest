@@ -1,7 +1,7 @@
 package ie.setu
 
-import ie.setu.config.Config
+import ie.setu.config.JavalinConfig
 
 fun main() {
-    Config.startService()
+    JavalinConfig.startService()
 }

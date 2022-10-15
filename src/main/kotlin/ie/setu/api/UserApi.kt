@@ -1,4 +1,4 @@
-package ie.setu.controllers
+package ie.setu.api
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -9,7 +9,7 @@ import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.apibuilder.EndpointGroup
 import io.javalin.http.Context
 
-object UserController : Controller {
+object UserApi : Api {
 
     override val endpoints = EndpointGroup {
         path("users") {
