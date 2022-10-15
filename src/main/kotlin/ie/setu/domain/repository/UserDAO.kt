@@ -1,28 +1,43 @@
 package ie.setu.domain.repository
 
 import ie.setu.domain.User
+import ie.setu.domain.db.Users
+import ie.setu.utils.mapToUser
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class UserDAO {
 
-    private val users = arrayListOf(
-        User(id = 0, name = "Alice", email = "alice@wonderland.com"),
-        User(id = 1, name = "Bob", email = "bob@cat.ie"),
-        User(id = 2, name = "Mary", email = "mary@contrary.com"),
-        User(id = 3, name = "Carol", email = "carol@singer.com")
-    )
+    fun findAll(): List<User> = transaction {
+        Users.selectAll().map { mapToUser(it) }
+    }
 
-    fun findAll(): ArrayList<User> = users
+    fun finById(id: Int): User? = transaction {
+        Users.select { Users.id eq id }.map { mapToUser(it) }.firstOrNull()
+    }
 
-    fun finById(id: Int): User? = users.find { it.id == id }
+    fun findByEmail(email: String): User? = transaction {
+        Users.select { Users.email eq email }.map { mapToUser(it) }.firstOrNull()
+    }
 
-    fun findByEmail(email: String): User? = users.find { it.email == email }
+    fun save(user: User) = transaction {
+        Users.insert {
+            it[name] = user.name
+            it[email] = user.email
+        }
+    }
 
-    fun save(user: User) = users.add(user)
+    fun delete(id: Int): Int = transaction {
+        Users.deleteWhere {
+            Users.id eq id
+        }
+    }
 
-    fun delete(id: Int): Boolean = users.removeIf { it.id == id }
-
-    fun update(user: User, newUser: User) {
-        user.name = newUser.name
-        user.email = newUser.email
+    fun update(id: Int, user: User) = transaction {
+        Users.update({ Users.id eq id }) {
+            it[name] = user.name
+            it[email] = user.email
+        }
     }
 }

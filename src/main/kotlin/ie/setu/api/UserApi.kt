@@ -48,23 +48,18 @@ object UserApi : Api {
     private fun addUser(ctx: Context) {
         val user = mapper.readValue<User>(ctx.body())
         userDAO.save(user)
-        ctx.json(userDAO)
+        ctx.json(user)
     }
 
     private fun deleteUser(ctx: Context) {
-        val removed = userDAO.delete(parseUserId(ctx))
-        if (removed) {
-            ctx.status(204)
-        }
+        userDAO.delete(parseUserId(ctx))
+        ctx.status(204)
     }
 
     private fun updateUser(ctx: Context) {
-        val user = userDAO.finById(parseUserId(ctx))
-        if (user != null) {
-            val newUser = mapper.readValue<User>(ctx.body())
-            userDAO.update(user, newUser)
-            ctx.json(user)
-        }
+        val newUser = mapper.readValue<User>(ctx.body())
+        userDAO.update(parseUserId(ctx), newUser)
+        ctx.json(newUser)
     }
 
     private fun parseUserId(ctx: Context) = ctx.pathParam(Params.USER_ID).toInt()
