@@ -14,8 +14,7 @@ object JavalinConfig {
         registerRoutes(app)
         handleErrors(app)
         handleExceptions(app)
-
-        app.start(7001)
+        startApplication(app)
     }
 
     private fun registerRoutes(app: Javalin) {
@@ -28,5 +27,9 @@ object JavalinConfig {
 
     private fun handleExceptions(app: Javalin) {
         app.exception(Exception::class.java) { e, _ -> e.printStackTrace() }
+    }
+
+    private fun startApplication(app: Javalin) {
+        app.start(System.getenv("PORT")?.toInt() ?: 7001)
     }
 }
