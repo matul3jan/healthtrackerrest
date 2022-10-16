@@ -13,9 +13,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.7.0-RC2</kotlin.version>
+        <kotlin.version>1.7.20</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <junit.version>4.13.1</junit.version>
+        <junit.version>4.13.2</junit.version>
     </properties>
 
     <dependencies>
@@ -39,30 +39,8 @@
         <!-- Adding Javalin dependency -->
         <dependency>
             <groupId>io.javalin</groupId>
-            <artifactId>javalin</artifactId>
+            <artifactId>javalin-bundle</artifactId>
             <version>4.6.1</version>
-        </dependency>
-        <!-- These Logging Dependencies are required; warning appears otherwise when running -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.0-alpha7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.0-alpha7</version>
-        </dependency>
-        <!-- json dependency for localhost running -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.14.0-rc1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-kotlin</artifactId>
-            <version>2.13.3</version>
         </dependency>
         <!-- Jetbrains exposed dependency -->
         <dependency>
@@ -80,7 +58,7 @@
         <dependency>
             <groupId>io.github.microutils</groupId>
             <artifactId>kotlin-logging-jvm</artifactId>
-            <version>2.1.23</version>
+            <version>3.0.0</version>
         </dependency>
     </dependencies>
 
@@ -89,6 +67,7 @@
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
 
         <plugins>
+            <!-- Kotlin Maven plugin -->
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
@@ -110,7 +89,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Heroku assembly plugin -->
+            <!-- Heroku's assembly plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
