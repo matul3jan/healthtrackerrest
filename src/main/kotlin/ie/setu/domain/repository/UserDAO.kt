@@ -4,10 +4,9 @@ import ie.setu.domain.User
 import ie.setu.domain.db.Users
 import ie.setu.utils.mapToUser
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class UserDAO {
+object UserDAO {
 
     fun findAll(): List<User> = transaction {
         Users.selectAll().map { mapToUser(it) }
@@ -34,7 +33,7 @@ class UserDAO {
         }
     }
 
-    fun update(id: Int, user: User) = transaction {
+    fun update(id: Int, user: User): Int = transaction {
         Users.update({ Users.id eq id }) {
             it[name] = user.name
             it[email] = user.email
