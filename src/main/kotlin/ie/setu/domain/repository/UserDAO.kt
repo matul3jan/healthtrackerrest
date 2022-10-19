@@ -12,7 +12,7 @@ object UserDAO {
         Users.selectAll().map { mapToUser(it) }
     }
 
-    fun finById(id: Int): User? = transaction {
+    fun findById(id: Int): User? = transaction {
         Users.select { Users.id eq id }.map { mapToUser(it) }.firstOrNull()
     }
 

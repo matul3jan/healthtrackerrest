@@ -57,7 +57,7 @@ object UserApi : Api {
         ]
     )
     fun getUserById(ctx: Context) {
-        val user = UserDAO.finById(parseUserId(ctx))
+        val user = UserDAO.findById(parseUserId(ctx))
         if (user != null) {
             ctx.status(200)
             ctx.json(user)
