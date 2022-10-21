@@ -4,4 +4,5 @@ object Params {
     // Users
     const val USER_ID = "user-id"
     const val USER_EMAIL = "user-email"
+    const val ACTIVITY_ID = "activity-id"
 }
