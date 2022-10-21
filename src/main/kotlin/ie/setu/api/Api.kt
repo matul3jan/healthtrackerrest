@@ -8,7 +8,8 @@ interface Api {
 
     companion object {
         val ApiFactory = arrayListOf(
-            UserApi
+            UserApi,
+            ActivityApi
         )
     }
 }
