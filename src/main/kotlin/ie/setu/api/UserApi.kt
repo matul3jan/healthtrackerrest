@@ -12,7 +12,9 @@ import io.javalin.plugin.openapi.annotations.*
 
 object UserApi : Api {
 
-    private const val apiPath = "/api/users"
+    const val apiPathUsers = "/api/users"
+
+    private const val tag = "User"
 
     override val endpoints = EndpointGroup {
         path("/users") {
@@ -35,8 +37,8 @@ object UserApi : Api {
     }
 
     @OpenApi(
-        tags = ["User"],
-        path = apiPath,
+        tags = [tag],
+        path = apiPathUsers,
         method = HttpMethod.GET,
         summary = "Get all users",
         responses = [OpenApiResponse("200", [OpenApiContent(Array<User>::class)])]
@@ -44,8 +46,8 @@ object UserApi : Api {
     private fun getAllUsers(ctx: Context) = UserController.getAllUsers(ctx)
 
     @OpenApi(
-        tags = ["User"],
-        path = "$apiPath/{$USER_ID}",
+        tags = [tag],
+        path = "$apiPathUsers/{$USER_ID}",
         method = HttpMethod.GET,
         summary = "Get user by ID",
         pathParams = [OpenApiParam(USER_ID, Int::class, "The User ID")],
@@ -54,8 +56,8 @@ object UserApi : Api {
     private fun getUserById(ctx: Context) = UserController.getUserById(ctx)
 
     @OpenApi(
-        tags = ["User"],
-        path = "$apiPath/email/{$USER_EMAIL}",
+        tags = [tag],
+        path = "$apiPathUsers/email/{$USER_EMAIL}",
         method = HttpMethod.GET,
         summary = "Get user by Email",
         pathParams = [OpenApiParam(USER_EMAIL, Int::class, "The user email")],
@@ -64,8 +66,8 @@ object UserApi : Api {
     private fun getUserByEmail(ctx: Context) = UserController.getUserByEmail(ctx)
 
     @OpenApi(
-        tags = ["User"],
-        path = apiPath,
+        tags = [tag],
+        path = apiPathUsers,
         method = HttpMethod.POST,
         summary = "Add User",
         requestBody = OpenApiRequestBody([OpenApiContent(User::class)]),
@@ -74,8 +76,8 @@ object UserApi : Api {
     private fun addUser(ctx: Context) = UserController.addUser(ctx)
 
     @OpenApi(
-        tags = ["User"],
-        path = "$apiPath/{$USER_ID}",
+        tags = [tag],
+        path = "$apiPathUsers/{$USER_ID}",
         method = HttpMethod.DELETE,
         summary = "Delete user by ID",
         pathParams = [OpenApiParam(USER_ID, Int::class, "The user ID")],
@@ -84,8 +86,8 @@ object UserApi : Api {
     private fun deleteUser(ctx: Context) = UserController.deleteUser(ctx)
 
     @OpenApi(
-        tags = ["User"],
-        path = "$apiPath/{$USER_ID}",
+        tags = [tag],
+        path = "$apiPathUsers/{$USER_ID}",
         method = HttpMethod.PATCH,
         summary = "Update user by ID",
         pathParams = [OpenApiParam(USER_ID, Int::class, "The user ID")],
