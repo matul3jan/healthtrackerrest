@@ -2,10 +2,12 @@ package ie.setu.api
 
 import ie.setu.config.DBConfig
 import ie.setu.domain.User
-import ie.setu.helpers.*
+import ie.setu.helpers.ServerContainer
+import ie.setu.helpers.nonExistingEmail
+import ie.setu.helpers.validEmail
+import ie.setu.helpers.validName
 import ie.setu.util.UserUtil
 import ie.setu.utils.JsonUtil.jsonToObject
-import kong.unirest.Unirest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
@@ -30,8 +32,8 @@ class UserApiTest {
     @Nested
     inner class ReadUsers {
         @Test
-        fun `get all users from the database returns 200 or 404 response`() {
-            val response = Unirest.get("$origin/api/users/").asString()
+        fun `get all users from the database returns 200 response`() {
+            val response = util.getUsers()
             assertEquals(200, response.status)
         }
 
@@ -51,7 +53,7 @@ class UserApiTest {
         fun `getting a user by id when id exists, returns a 200 response`() {
 
             // Add the user
-            val addResponse = util.addUser(validName, validEmail)
+            val addResponse = util.addUser()
             val addedUser: User = jsonToObject(addResponse.body.toString())
 
             // Retrieve the added user from the database and verify return code
@@ -66,7 +68,7 @@ class UserApiTest {
         fun `getting a user by email when email exists, returns a 200 response`() {
 
             // Add the user
-            util.addUser(validName, validEmail)
+            util.addUser()
 
             // Retrieve the added user from the database and verify return code
             val retrieveResponse = util.retrieveUserByEmail(validEmail)
@@ -84,7 +86,7 @@ class UserApiTest {
         fun `add a user with correct details returns a 201 response`() {
 
             // Add the user and verify return code (using fixture data)
-            val addResponse = util.addUser(validName, validEmail)
+            val addResponse = util.addUser()
             assertEquals(201, addResponse.status)
 
             // Retrieve the added user from the database and verify return code
@@ -110,11 +112,11 @@ class UserApiTest {
             // Add the user that we plan to do an update on
             val updatedName = "Updated Name"
             val updatedEmail = "Updated Email"
-            val addedResponse = util.addUser(validName, validEmail)
+            val addedResponse = util.addUser()
             val addedUser: User = jsonToObject(addedResponse.body.toString())
 
             // Update the email and name of the retrieved user and assert 204 is returned
-            assertEquals(204, util.updateUser(addedUser.id, updatedName, updatedEmail).status)
+            assertEquals(204, util.updateUser(addedUser.id).status)
 
             // Retrieve updated user and assert details are correct
             val updatedUserResponse = util.retrieveUserById(addedUser.id)
@@ -128,7 +130,7 @@ class UserApiTest {
 
         @Test
         fun `updating a user when it doesn't exist, returns a 404 response`() {
-            assertEquals(404, util.updateUser(-1, updatedName, updatedEmail).status)
+            assertEquals(404, util.updateUser(-1).status)
         }
     }
 
@@ -143,7 +145,7 @@ class UserApiTest {
         fun `deleting a user when it exists, returns a 204 response`() {
 
             // Add the user that we plan to do delete on
-            val addedResponse = util.addUser(validName, validEmail)
+            val addedResponse = util.addUser()
             val addedUser: User = jsonToObject(addedResponse.body.toString())
 
             // Delete the added user and assert a 204 is returned
