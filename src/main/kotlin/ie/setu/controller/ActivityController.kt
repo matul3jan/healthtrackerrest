@@ -1,6 +1,7 @@
 package ie.setu.controller
 
-import ie.setu.config.Params
+import ie.setu.config.Params.parseActivityId
+import ie.setu.config.Params.parseUserId
 import ie.setu.domain.Activity
 import ie.setu.domain.repository.ActivityDAO
 import ie.setu.domain.repository.UserDAO
@@ -10,6 +11,7 @@ import io.javalin.http.Context
 object ActivityController {
 
     fun getAllActivities(ctx: Context) {
+        ctx.status(200)
         ctx.json(ActivityDAO.getAll())
     }
 
@@ -25,8 +27,15 @@ object ActivityController {
 
     fun addActivity(ctx: Context) {
         val activity: Activity = jsonToObject(ctx.body())
-        ActivityDAO.save(activity)
-        ctx.json(activity)
+        val userId = UserDAO.findById(activity.userId)
+        if (userId != null) {
+            val id = ActivityDAO.save(activity)
+            activity.id = id
+            ctx.json(activity)
+            ctx.status(201)
+        } else {
+            ctx.status(404)
+        }
     }
 
     fun updateActivity(ctx: Context) {
@@ -54,9 +63,10 @@ object ActivityController {
     fun getActivitiesByUserId(ctx: Context) {
         if (UserDAO.findById(ctx.pathParam("user-id").toInt()) != null) {
             val activities = ActivityDAO.findByUserId(ctx.pathParam("user-id").toInt())
-            if (activities.isNotEmpty()) {
-                ctx.json(activities)
-            }
+            ctx.status(200)
+            ctx.json(activities)
+        } else {
+            ctx.status(404)
         }
     }
 
@@ -68,9 +78,4 @@ object ActivityController {
             ctx.status(404)
         }
     }
-
-    // Helper functions
-
-    private fun parseActivityId(ctx: Context) = ctx.pathParam(Params.ACTIVITY_ID).toInt()
-    private fun parseUserId(ctx: Context) = ctx.pathParam(Params.USER_ID).toInt()
 }

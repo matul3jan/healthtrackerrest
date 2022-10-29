@@ -1,7 +1,7 @@
 package ie.setu.controller
 
 import ie.setu.config.Params.USER_EMAIL
-import ie.setu.config.Params.USER_ID
+import ie.setu.config.Params.parseUserId
 import ie.setu.domain.User
 import ie.setu.domain.repository.UserDAO
 import ie.setu.utils.JsonUtil.jsonToObject
@@ -61,6 +61,4 @@ object UserController {
             ctx.status(404)
         }
     }
-
-    private fun parseUserId(ctx: Context) = ctx.pathParam(USER_ID).toInt()
 }
