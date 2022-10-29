@@ -1,44 +1,40 @@
 package ie.setu.controller
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import ie.setu.config.Params
 import ie.setu.domain.Activity
 import ie.setu.domain.repository.ActivityDAO
 import ie.setu.domain.repository.UserDAO
-import ie.setu.utils.JsonUtil.jsonObjectMapper
+import ie.setu.utils.JsonUtil.jsonToObject
 import io.javalin.http.Context
 
 object ActivityController {
 
-    private val mapper = jsonObjectMapper()
-
     fun getAllActivities(ctx: Context) {
-        //mapper handles the deserialization of Joda date into a String.
-        ctx.json(mapper.writeValueAsString(ActivityDAO.getAll()))
+        ctx.json(ActivityDAO.getAll())
     }
 
     fun getActivityById(ctx: Context) {
         val activity = ActivityDAO.findByActivityId(parseActivityId(ctx))
         if (activity != null) {
             ctx.status(200)
-            ctx.json(mapper.writeValueAsString(activity))
+            ctx.json(activity)
         } else {
             ctx.status(404)
         }
     }
 
     fun addActivity(ctx: Context) {
-        val activity = mapper.readValue<Activity>(ctx.body())
+        val activity: Activity = jsonToObject(ctx.body())
         ActivityDAO.save(activity)
-        ctx.json(mapper.writeValueAsString(activity))
+        ctx.json(activity)
     }
 
     fun updateActivity(ctx: Context) {
-        val newActivity = jsonObjectMapper().readValue<Activity>(ctx.body())
+        val newActivity: Activity = jsonToObject(ctx.body())
         val id = ActivityDAO.update(parseActivityId(ctx), newActivity)
         if (id != 0) {
             ctx.status(204)
-            ctx.json(mapper.writeValueAsString(newActivity))
+            ctx.json(newActivity)
         } else {
             ctx.status(404)
         }
@@ -59,7 +55,7 @@ object ActivityController {
         if (UserDAO.findById(ctx.pathParam("user-id").toInt()) != null) {
             val activities = ActivityDAO.findByUserId(ctx.pathParam("user-id").toInt())
             if (activities.isNotEmpty()) {
-                ctx.json(mapper.writeValueAsString(activities))
+                ctx.json(activities)
             }
         }
     }

@@ -11,6 +11,10 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.joda.time.DateTime
 
 const val nonExistingEmail = "112233445566778testUser@xxxxx.xx"
+const val validName = "Test User 1"
+const val validEmail = "testuser1@test.com"
+const val updatedName = "Updated Name"
+const val updatedEmail = "Updated Email"
 
 fun connectTempDatabase () {
     Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver", user = "root", password = "")

@@ -13,7 +13,7 @@ import org.eclipse.jetty.http.HttpStatus
 
 object JavalinConfig {
 
-    fun startService() {
+    fun startService(): Javalin {
 
         val app = Javalin.create(::registerPlugins)
 
@@ -21,6 +21,8 @@ object JavalinConfig {
         handleErrors(app)
         handleExceptions(app)
         startApplication(app)
+
+        return app
     }
 
     private fun registerPlugins(config: JavalinConfig) {
@@ -44,11 +46,12 @@ object JavalinConfig {
     }
 
     private fun handleErrors(app: Javalin) {
-        app.error(HttpStatus.NOT_FOUND_404) { ctx -> ctx.json("Sorry, resource not found!") }
+        app.error(HttpStatus.NOT_FOUND_404) { ctx -> ctx.result("404 - Resource not found") }
+            .error(HttpStatus.INTERNAL_SERVER_ERROR_500) { ctx -> ctx.result("500 - Internal server error") }
     }
 
     private fun handleExceptions(app: Javalin) {
-        app.exception(Exception::class.java) { e, _ -> e.printStackTrace() }
+        app.exception(Exception::class.java) { _, ctx -> ctx.status(500) }
     }
 
     private fun startApplication(app: Javalin) {

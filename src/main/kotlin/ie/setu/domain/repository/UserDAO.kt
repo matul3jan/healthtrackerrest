@@ -20,10 +20,12 @@ object UserDAO {
         Users.select { Users.email eq email }.map { mapToUser(it) }.firstOrNull()
     }
 
-    fun save(user: User) = transaction {
-        Users.insert {
-            it[name] = user.name
-            it[email] = user.email
+    fun save(user: User): Int {
+        return transaction {
+            Users.insert {
+                it[name] = user.name
+                it[email] = user.email
+            } get Users.id
         }
     }
 
