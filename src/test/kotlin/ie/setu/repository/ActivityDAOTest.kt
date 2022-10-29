@@ -25,7 +25,7 @@ class ActivityDAOTest {
     companion object {
         @BeforeAll
         @JvmStatic
-        internal fun setupInMemoryDatabaseConnection() {
+        internal fun setup() {
             connectTempDatabase()
         }
     }
