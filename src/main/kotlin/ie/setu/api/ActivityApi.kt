@@ -12,7 +12,8 @@ import io.javalin.plugin.openapi.annotations.*
 
 object ActivityApi : Api {
 
-    private const val apiPathActivity = "/api/activities"
+    const val apiPathActivity = "/api/activities"
+
     private const val tag = "Activity"
 
     override val endpoints = EndpointGroup {
@@ -23,6 +24,10 @@ object ActivityApi : Api {
                 get(::getActivityById)
                 patch(::updateActivity)
                 delete(::deleteActivityById)
+                // Nested endpoint
+                path("/goals") {
+                    get(GoalApi::getGoalsByActivityId)
+                }
             }
         }
     }

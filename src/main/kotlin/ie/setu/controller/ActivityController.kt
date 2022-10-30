@@ -16,7 +16,7 @@ object ActivityController {
     }
 
     fun getActivityById(ctx: Context) {
-        val activity = ActivityDAO.findByActivityId(parseActivityId(ctx))
+        val activity = ActivityDAO.findById(parseActivityId(ctx))
         if (activity != null) {
             ctx.status(200)
             ctx.json(activity)
@@ -61,8 +61,9 @@ object ActivityController {
     // Public functions used outside
 
     fun getActivitiesByUserId(ctx: Context) {
-        if (UserDAO.findById(ctx.pathParam("user-id").toInt()) != null) {
-            val activities = ActivityDAO.findByUserId(ctx.pathParam("user-id").toInt())
+        val userId = parseUserId(ctx)
+        if (UserDAO.findById(userId) != null) {
+            val activities = ActivityDAO.findByUserId(userId)
             ctx.status(200)
             ctx.json(activities)
         } else {

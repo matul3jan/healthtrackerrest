@@ -15,4 +15,9 @@ object Params {
     const val ACTIVITY_ID = "activity-id"
 
     fun parseActivityId(ctx: Context) = ctx.pathParam(ACTIVITY_ID).toInt()
+
+    // Goals
+    const val GOAL_ID = "goal-id"
+
+    fun parseGoalId(ctx: Context) = ctx.pathParam(GOAL_ID).toInt()
 }
