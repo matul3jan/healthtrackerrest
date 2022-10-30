@@ -8,9 +8,11 @@ object Params {
     const val USER_ID = "user-id"
     const val USER_EMAIL = "user-email"
 
+    fun parseUserId(ctx: Context) = ctx.pathParam(USER_ID).toInt()
+    fun parseUserEmail(ctx: Context) = ctx.pathParam(USER_EMAIL)
+
     // Activities
     const val ACTIVITY_ID = "activity-id"
 
     fun parseActivityId(ctx: Context) = ctx.pathParam(ACTIVITY_ID).toInt()
-    fun parseUserId(ctx: Context) = ctx.pathParam(USER_ID).toInt()
 }

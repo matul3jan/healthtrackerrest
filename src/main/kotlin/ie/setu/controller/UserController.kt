@@ -1,6 +1,6 @@
 package ie.setu.controller
 
-import ie.setu.config.Params.USER_EMAIL
+import ie.setu.config.Params.parseUserEmail
 import ie.setu.config.Params.parseUserId
 import ie.setu.domain.User
 import ie.setu.domain.repository.UserDAO
@@ -25,7 +25,7 @@ object UserController {
     }
 
     fun getUserByEmail(ctx: Context) {
-        val user = UserDAO.findByEmail(ctx.pathParam(USER_EMAIL))
+        val user = UserDAO.findByEmail(parseUserEmail(ctx))
         if (user != null) {
             ctx.json(user)
             ctx.status(200)
