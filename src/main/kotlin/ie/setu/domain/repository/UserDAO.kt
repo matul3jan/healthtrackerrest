@@ -20,13 +20,15 @@ object UserDAO {
         Users.select { Users.email eq email }.map { mapToUser(it) }.firstOrNull()
     }
 
-    fun save(user: User): Int {
-        return transaction {
-            Users.insert {
-                it[name] = user.name
-                it[email] = user.email
-            } get Users.id
-        }
+    fun save(user: User): Int = transaction {
+        Users.insert {
+            it[name] = user.name
+            it[email] = user.email
+            it[age] = user.age
+            it[gender] = user.gender
+            it[height] = user.height
+            it[weight] = user.weight
+        } get Users.id
     }
 
     fun delete(id: Int): Int = transaction {
@@ -39,6 +41,10 @@ object UserDAO {
         Users.update({ Users.id eq id }) {
             it[name] = user.name
             it[email] = user.email
+            it[age] = user.age
+            it[gender] = user.gender
+            it[height] = user.height
+            it[weight] = user.weight
         }
     }
 }

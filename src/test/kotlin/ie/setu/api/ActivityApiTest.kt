@@ -191,7 +191,7 @@ class ActivityApiTest {
             assertEquals(201, addActivityResponse2.status)
             assertEquals(201, addActivityResponse3.status)
 
-            assertEquals(204, userUtil.deleteUser(addedUser.id).status)
+            assertEquals(204, activityUtil.deleteByUserId(addedUser.id).status)
 
             val addedActivity1: Activity = jsonNodeToObject(addActivityResponse1)
             val addedActivity2: Activity = jsonNodeToObject(addActivityResponse2)
@@ -200,6 +200,8 @@ class ActivityApiTest {
             assertEquals(404, activityUtil.getActivityById(addedActivity1.id).status)
             assertEquals(404, activityUtil.getActivityById(addedActivity2.id).status)
             assertEquals(404, activityUtil.getActivityById(addedActivity3.id).status)
+
+            userUtil.deleteUser(addedUser.id)
         }
     }
 }
