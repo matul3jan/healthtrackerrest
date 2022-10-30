@@ -1,10 +1,13 @@
 package ie.setu.helpers
 
 import ie.setu.domain.Activity
+import ie.setu.domain.Goal
 import ie.setu.domain.User
 import ie.setu.domain.db.Activities
+import ie.setu.domain.db.Goals
 import ie.setu.domain.db.Users
 import ie.setu.domain.repository.ActivityDAO
+import ie.setu.domain.repository.GoalDAO
 import ie.setu.domain.repository.UserDAO
 import okhttp3.internal.immutableListOf
 import org.jetbrains.exposed.sql.Database
@@ -46,9 +49,15 @@ val users = immutableListOf(
 )
 
 val activities = immutableListOf(
-    Activity(id = 1, description = "Running", duration = 22.0, calories = 230, started = DateTime.now(), userId = 1),
-    Activity(id = 2, description = "Hopping", duration = 10.5, calories = 80, started = DateTime.now(), userId = 1),
-    Activity(id = 3, description = "Walking", duration = 12.0, calories = 120, started = DateTime.now(), userId = 2)
+    Activity(id = 1, description = "Running", duration = 22.0, calories = 230, started = DateTime.now(), userId = users[0].id),
+    Activity(id = 2, description = "Hopping", duration = 10.5, calories = 80, started = DateTime.now(), userId = users[0].id),
+    Activity(id = 3, description = "Walking", duration = 12.0, calories = 120, started = DateTime.now(), userId = users[1].id)
+)
+
+val goals = immutableListOf(
+    Goal(id = 1, target = 3.0, current = 1.0, unit = "km", userId = users[0].id, activityId = activities[0].id),
+    Goal(id = 2, target = 5.0, current = 2.0, unit = "km", userId = users[0].id, activityId = activities[2].id),
+    Goal(id = 3, target = 5.0, current = 2.0, unit = "minutes", userId = users[1].id, activityId = activities[2].id)
 )
 
 fun populateUserTable() {
@@ -63,4 +72,11 @@ fun populateActivityTable() {
     ActivityDAO.save(activities[0])
     ActivityDAO.save(activities[1])
     ActivityDAO.save(activities[2])
+}
+
+fun populateGoalsTable() {
+    SchemaUtils.create(Goals)
+    GoalDAO.save(goals[0])
+    GoalDAO.save(goals[1])
+    GoalDAO.save(goals[2])
 }
