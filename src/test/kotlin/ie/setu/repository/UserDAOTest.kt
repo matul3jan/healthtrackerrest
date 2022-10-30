@@ -22,8 +22,6 @@ private val user1 = users[0]
 private val user2 = users[1]
 private val user3 = users[2]
 
-private const val DELTA = 1e-15
-
 class UserDAOTest {
 
     companion object {
@@ -173,7 +171,7 @@ class UserDAOTest {
             assertEquals(expected.age, actual.age)
             assertEquals(expected.gender, actual.gender)
             assertEquals(expected.height, actual.height)
-            assertEquals(expected.weight.toDouble(), actual.weight.toDouble(), DELTA)
+            assertEquals(expected.weight.toDouble(), actual.weight.toDouble(), 0.1)
         }
     }
 }

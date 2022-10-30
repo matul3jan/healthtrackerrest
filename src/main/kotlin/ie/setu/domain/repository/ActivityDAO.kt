@@ -12,7 +12,7 @@ object ActivityDAO {
         Activities.selectAll().map { mapToActivity(it) }
     }
 
-    fun findByActivityId(id: Int): Activity? = transaction {
+    fun findById(id: Int): Activity? = transaction {
         Activities.select { Activities.id eq id }
             .map { mapToActivity(it) }
             .firstOrNull()

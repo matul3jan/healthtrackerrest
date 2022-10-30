@@ -106,7 +106,7 @@ class ActivityApiTest {
         fun `add an activity when no user exists for it, returns a 404 response`() {
 
             val userId = -1
-            assertEquals(404, activityUtil.getActivityById(userId).status)
+            assertEquals(404, activityUtil.retrieveByUserId(userId).status)
 
             val activity = activities[0].copy(userId = userId)
             val addActivityResponse = activityUtil.addActivity(activity)

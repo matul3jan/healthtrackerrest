@@ -1,7 +1,7 @@
 package ie.setu.domain
 
 data class Goal(
-    val id: Int,
+    var id: Int,
     val target: Double,
     val current: Double,
     val unit: String,

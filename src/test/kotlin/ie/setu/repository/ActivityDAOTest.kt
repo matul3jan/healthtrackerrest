@@ -39,9 +39,9 @@ class ActivityDAOTest {
                 populateUserTable()
                 populateActivityTable()
                 assertEquals(3, ActivityDAO.getAll().size)
-                assertEquals(activity1, ActivityDAO.findByActivityId(activity1.id))
-                assertEquals(activity2, ActivityDAO.findByActivityId(activity2.id))
-                assertEquals(activity3, ActivityDAO.findByActivityId(activity3.id))
+                assertEquals(activity1, ActivityDAO.findById(activity1.id))
+                assertEquals(activity2, ActivityDAO.findById(activity2.id))
+                assertEquals(activity3, ActivityDAO.findById(activity3.id))
             }
         }
     }
@@ -91,7 +91,7 @@ class ActivityDAOTest {
             transaction {
                 populateUserTable()
                 populateActivityTable()
-                assertEquals(null, ActivityDAO.findByActivityId(4))
+                assertEquals(null, ActivityDAO.findById(4))
             }
         }
 
@@ -100,8 +100,8 @@ class ActivityDAOTest {
             transaction {
                 populateUserTable()
                 populateActivityTable()
-                assertEquals(activity1, ActivityDAO.findByActivityId(1))
-                assertEquals(activity3, ActivityDAO.findByActivityId(3))
+                assertEquals(activity1, ActivityDAO.findById(1))
+                assertEquals(activity3, ActivityDAO.findById(3))
             }
         }
     }
@@ -119,7 +119,7 @@ class ActivityDAOTest {
                     calories = 220, started = DateTime.now(), userId = 2
                 )
                 ActivityDAO.update(activity3updated.id, activity3updated)
-                assertEquals(activity3updated, ActivityDAO.findByActivityId(3))
+                assertEquals(activity3updated, ActivityDAO.findById(3))
             }
         }
 
@@ -133,7 +133,7 @@ class ActivityDAOTest {
                     calories = 220, started = DateTime.now(), userId = 2
                 )
                 ActivityDAO.update(4, activity4updated)
-                assertEquals(null, ActivityDAO.findByActivityId(4))
+                assertEquals(null, ActivityDAO.findById(4))
                 assertEquals(3, ActivityDAO.getAll().size)
             }
         }

@@ -37,6 +37,11 @@ const val updatedDuration = 30.0
 const val updatedCalories = 945
 val updatedStarted: DateTime = DateTime.parse("2020-06-11T05:59:27.258Z")
 
+// Goal
+const val updatedTarget = 10.0
+const val updatedCurrent = 8.0
+const val updatedUnit = "minutes"
+
 fun connectTempDatabase() {
     Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver", user = "root", password = "")
 }

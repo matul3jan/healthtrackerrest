@@ -24,10 +24,14 @@ object UserApi : Api {
                 get(::getUserById)
                 patch(::updateUser)
                 delete(::deleteUser)
-                // Nested endpoint
+                // Nested endpoints
                 path("/activities") {
                     get(ActivityApi::getActivitiesByUserId)
                     delete(ActivityApi::deleteActivityByUserId)
+                }
+                path("/goals") {
+                    get(GoalApi::getGoalsByUserId)
+                    delete(GoalApi::deleteGoalByUserId)
                 }
             }
             path("/email/{$USER_EMAIL}") {
