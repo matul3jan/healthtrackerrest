@@ -1,5 +1,6 @@
 package ie.setu.helpers
 
+import ie.setu.config.Properties.getProperty
 import ie.setu.domain.Activity
 import ie.setu.domain.Goal
 import ie.setu.domain.User
@@ -9,6 +10,7 @@ import ie.setu.domain.db.Users
 import ie.setu.domain.repository.ActivityDAO
 import ie.setu.domain.repository.GoalDAO
 import ie.setu.domain.repository.UserDAO
+import kong.unirest.Unirest
 import okhttp3.internal.immutableListOf
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -22,6 +24,7 @@ const val validEmail = "testuser1@test.com"
 const val validAge = 25
 const val validGender = "M"
 const val validHeight = 180
+const val validPassword = "111"
 val validWeight = BigDecimal(65.6)
 
 const val updatedName = "Updated Name"
@@ -29,6 +32,7 @@ const val updatedEmail = "Updated Email"
 const val updatedAge = 30
 const val updatedGender = "F"
 const val updatedHeight = 175
+const val updatedPassword = "222"
 val updatedWeight = BigDecimal(71.2)
 
 // Activity
@@ -46,17 +50,82 @@ fun connectTempDatabase() {
     Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver", user = "root", password = "")
 }
 
+fun setBasicAuthForTests() {
+    Unirest.config().setDefaultBasicAuth(getProperty("test.user"), getProperty("test.password"))
+}
+
+fun clearBasicAuthForTests() {
+    Unirest.config().clearDefaultHeaders()
+}
+
 val users = immutableListOf(
-    User(id = 1, name = "Alice Wonderland", email = "alice@wonderland.com", age = 25, gender = "F", height = 180, weight = BigDecimal(65.6)),
-    User(id = 2, name = "Bob Cat", email = "bob@cat.ie", age = 20, gender = "M", height = 160, weight = BigDecimal(61.9)),
-    User(id = 3, name = "Mary Contrary", email = "mary@contrary.com", age = 39, gender = "F", height = 178, weight = BigDecimal(60)),
-    User(id = 4, name = "Carol Singer", email = "carol@singer.com", age = 45, gender = "F", height = 149, weight = BigDecimal(75.16))
+    User(
+        id = 1,
+        name = "Alice Wonderland",
+        email = "alice@wonderland.com",
+        age = 25,
+        gender = "F",
+        height = 180,
+        weight = BigDecimal(65.6),
+        password = "123"
+    ),
+    User(
+        id = 2,
+        name = "Bob Cat",
+        email = "bob@cat.ie",
+        age = 20,
+        gender = "M",
+        height = 160,
+        weight = BigDecimal(61.9),
+        password = "456"
+    ),
+    User(
+        id = 3,
+        name = "Mary Contrary",
+        email = "mary@contrary.com",
+        age = 39,
+        gender = "F",
+        height = 178,
+        weight = BigDecimal(60),
+        password = "789"
+    ),
+    User(
+        id = 4,
+        name = "Carol Singer",
+        email = "carol@singer.com",
+        age = 45,
+        gender = "F",
+        height = 149,
+        weight = BigDecimal(75.16),
+        password = "000"
+    )
 )
 
 val activities = immutableListOf(
-    Activity(id = 1, description = "Running", duration = 22.0, calories = 230, started = DateTime.now(), userId = users[0].id),
-    Activity(id = 2, description = "Hopping", duration = 10.5, calories = 80, started = DateTime.now(), userId = users[0].id),
-    Activity(id = 3, description = "Walking", duration = 12.0, calories = 120, started = DateTime.now(), userId = users[1].id)
+    Activity(
+        id = 1,
+        description = "Running",
+        duration = 22.0,
+        calories = 230,
+        started = DateTime.now(),
+        userId = users[0].id
+    ),
+    Activity(
+        id = 2,
+        description = "Hopping",
+        duration = 10.5,
+        calories = 80,
+        started = DateTime.now(),
+        userId = users[0].id
+    ),
+    Activity(
+        id = 3,
+        description = "Walking",
+        duration = 12.0,
+        calories = 120,
+        started = DateTime.now(),
+        userId = users[1].id
+    )
 )
 
 val goals = immutableListOf(

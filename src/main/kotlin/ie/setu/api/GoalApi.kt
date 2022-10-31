@@ -5,6 +5,7 @@ import ie.setu.api.UserApi.apiPathUsers
 import ie.setu.config.Params.ACTIVITY_ID
 import ie.setu.config.Params.GOAL_ID
 import ie.setu.config.Params.USER_ID
+import ie.setu.config.Role
 import ie.setu.controller.GoalController
 import ie.setu.domain.Goal
 import io.javalin.apibuilder.ApiBuilder.*
@@ -20,11 +21,11 @@ object GoalApi : Api {
     override val endpoints = EndpointGroup {
         path("/goals") {
             get(::getAllGoals)
-            post(::addGoal)
+            post(::addGoal, Role.USER)
             path("/{$GOAL_ID}") {
-                get(::getGoalById)
-                patch(::updateGoal)
-                delete(::deleteGoalById)
+                get(::getGoalById, Role.USER)
+                patch(::updateGoal, Role.USER)
+                delete(::deleteGoalById, Role.USER)
             }
         }
     }

@@ -1,17 +1,13 @@
 package ie.setu.api
 
-import ie.setu.config.DBConfig
 import ie.setu.domain.Activity
 import ie.setu.domain.User
 import ie.setu.helpers.*
 import ie.setu.util.ActivityUtil
 import ie.setu.util.UserUtil
 import ie.setu.utils.JsonUtil.jsonNodeToObject
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ActivityApiTest {
@@ -25,7 +21,13 @@ class ActivityApiTest {
         @BeforeAll
         @JvmStatic
         internal fun setup() {
-            DBConfig.createDbConnection()
+            setBasicAuthForTests()
+        }
+
+        @AfterAll
+        @JvmStatic
+        internal fun teardown() {
+            clearBasicAuthForTests()
         }
     }
 

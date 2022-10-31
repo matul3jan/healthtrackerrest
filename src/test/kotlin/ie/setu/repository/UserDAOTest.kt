@@ -7,6 +7,7 @@ import ie.setu.helpers.connectTempDatabase
 import ie.setu.helpers.nonExistingEmail
 import ie.setu.helpers.populateUserTable
 import ie.setu.helpers.users
+import ie.setu.utils.checkPassword
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
 import java.math.BigDecimal
+import kotlin.test.assertTrue
 
 // Retrieving some test data from Fixtures
 private val user1 = users[0]
@@ -111,7 +113,8 @@ class UserDAOTest {
                     age = 25,
                     gender = "F",
                     height = 180,
-                    weight = BigDecimal(65.6)
+                    weight = BigDecimal(65.6),
+                    password = "123"
                 )
                 UserDAO.update(user3.id, user3Updated)
                 assertUser(user3Updated, UserDAO.findById(3))
@@ -129,7 +132,8 @@ class UserDAOTest {
                     age = 25,
                     gender = "F",
                     height = 180,
-                    weight = BigDecimal(65.6)
+                    weight = BigDecimal(65.6),
+                    password = "123"
                 )
                 UserDAO.update(4, user4Updated)
                 assertEquals(null, UserDAO.findById(4))
@@ -172,6 +176,7 @@ class UserDAOTest {
             assertEquals(expected.gender, actual.gender)
             assertEquals(expected.height, actual.height)
             assertEquals(expected.weight.toDouble(), actual.weight.toDouble(), 0.1)
+            assertTrue(checkPassword(expected.password, actual.password))
         }
     }
 }

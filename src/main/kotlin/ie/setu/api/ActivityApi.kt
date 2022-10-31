@@ -3,6 +3,7 @@ package ie.setu.api
 import ie.setu.api.UserApi.apiPathUsers
 import ie.setu.config.Params.ACTIVITY_ID
 import ie.setu.config.Params.USER_ID
+import ie.setu.config.Role
 import ie.setu.controller.ActivityController
 import ie.setu.domain.Activity
 import io.javalin.apibuilder.ApiBuilder.*
@@ -19,14 +20,14 @@ object ActivityApi : Api {
     override val endpoints = EndpointGroup {
         path("/activities") {
             get(::getAllActivities)
-            post(::addActivity)
+            post(::addActivity, Role.USER)
             path("/{$ACTIVITY_ID}") {
-                get(::getActivityById)
-                patch(::updateActivity)
-                delete(::deleteActivityById)
+                get(::getActivityById, Role.USER)
+                patch(::updateActivity, Role.USER)
+                delete(::deleteActivityById, Role.USER)
                 // Nested endpoint
                 path("/goals") {
-                    get(GoalApi::getGoalsByActivityId)
+                    get(GoalApi::getGoalsByActivityId, Role.USER)
                 }
             }
         }

@@ -1,7 +1,9 @@
 package ie.setu.domain.repository
 
+import ie.setu.config.Auth
 import ie.setu.domain.User
 import ie.setu.domain.db.Users
+import ie.setu.utils.hashPassword
 import ie.setu.utils.mapToUser
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -20,15 +22,23 @@ object UserDAO {
         Users.select { Users.email eq email }.map { mapToUser(it) }.firstOrNull()
     }
 
-    fun save(user: User): Int = transaction {
-        Users.insert {
-            it[name] = user.name
-            it[email] = user.email
-            it[age] = user.age
-            it[gender] = user.gender
-            it[height] = user.height
-            it[weight] = user.weight
-        } get Users.id
+    fun save(user: User): Int {
+
+        val id = transaction {
+            Users.insert {
+                it[name] = user.name
+                it[email] = user.email
+                it[age] = user.age
+                it[gender] = user.gender
+                it[height] = user.height
+                it[weight] = user.weight
+                it[password] = hashPassword(user.password)
+            } get Users.id
+        }
+
+        Auth.updateKeyPairs()
+
+        return id
     }
 
     fun delete(id: Int): Int = transaction {
@@ -45,6 +55,7 @@ object UserDAO {
             it[gender] = user.gender
             it[height] = user.height
             it[weight] = user.weight
+            it[password] = hashPassword(user.password)
         }
     }
 }

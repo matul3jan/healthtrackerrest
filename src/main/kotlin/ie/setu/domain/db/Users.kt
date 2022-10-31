@@ -10,4 +10,5 @@ object Users: Table("Users") {
     val gender = varchar("gender", 1)
     val height = integer("height")
     val weight = decimal("weight", 8, 2)
+    val password = varchar("password", 255)
 }
