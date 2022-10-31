@@ -6,7 +6,8 @@ CREATE TABLE users
     age    INTEGER,
     gender VARCHAR(1),
     height INTEGER,
-    weight DECIMAL
+    weight DECIMAL,
+    password varchar(255) NOT NULL
 )
 
 CREATE TABLE activities

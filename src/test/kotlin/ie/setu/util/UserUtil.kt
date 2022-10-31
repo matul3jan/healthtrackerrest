@@ -9,8 +9,8 @@ import kong.unirest.Unirest
 class UserUtil(origin: String) {
 
     private val path = "$origin/api/users"
-    private val validUser = User(-1, validName, validEmail, validAge, validGender, validHeight, validWeight)
-    private val updatedUser = User(-1, updatedName, updatedEmail, updatedAge, updatedGender, updatedHeight, updatedWeight)
+    private val validUser = User(-1, validName, validEmail, validAge, validGender, validHeight, validWeight, validPassword)
+    private val updatedUser = User(-1, updatedName, updatedEmail, updatedAge, updatedGender, updatedHeight, updatedWeight, updatedPassword)
 
     fun getUsers(): HttpResponse<JsonNode> = Unirest.get(path).asJson()
 

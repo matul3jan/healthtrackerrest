@@ -1,18 +1,11 @@
 package ie.setu.api
 
-import ie.setu.config.DBConfig
 import ie.setu.domain.User
-import ie.setu.helpers.ServerContainer
-import ie.setu.helpers.nonExistingEmail
-import ie.setu.helpers.validEmail
-import ie.setu.helpers.validName
+import ie.setu.helpers.*
 import ie.setu.util.UserUtil
 import ie.setu.utils.JsonUtil.jsonToObject
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserApiTest {
@@ -25,7 +18,13 @@ class UserApiTest {
         @BeforeAll
         @JvmStatic
         internal fun setup() {
-            DBConfig.createDbConnection()
+            setBasicAuthForTests()
+        }
+
+        @AfterAll
+        @JvmStatic
+        internal fun teardown() {
+            clearBasicAuthForTests()
         }
     }
 

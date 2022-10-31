@@ -2,6 +2,7 @@ package ie.setu.api
 
 import ie.setu.config.Params.USER_EMAIL
 import ie.setu.config.Params.USER_ID
+import ie.setu.config.Role
 import ie.setu.controller.UserController
 import ie.setu.domain.User
 import io.javalin.apibuilder.ApiBuilder.*
@@ -19,19 +20,19 @@ object UserApi : Api {
     override val endpoints = EndpointGroup {
         path("/users") {
             get(::getAllUsers)
-            post(::addUser)
+            post(::addUser, Role.ANYONE)
             path("/{$USER_ID}") {
-                get(::getUserById)
-                patch(::updateUser)
-                delete(::deleteUser)
+                get(::getUserById, Role.USER)
+                patch(::updateUser, Role.USER)
+                delete(::deleteUser, Role.USER)
                 // Nested endpoints
                 path("/activities") {
-                    get(ActivityApi::getActivitiesByUserId)
-                    delete(ActivityApi::deleteActivityByUserId)
+                    get(ActivityApi::getActivitiesByUserId, Role.USER)
+                    delete(ActivityApi::deleteActivityByUserId, Role.USER)
                 }
                 path("/goals") {
-                    get(GoalApi::getGoalsByUserId)
-                    delete(GoalApi::deleteGoalByUserId)
+                    get(GoalApi::getGoalsByUserId, Role.USER)
+                    delete(GoalApi::deleteGoalByUserId, Role.USER)
                 }
             }
             path("/email/{$USER_EMAIL}") {

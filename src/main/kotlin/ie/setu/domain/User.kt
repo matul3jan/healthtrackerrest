@@ -9,5 +9,6 @@ data class User(
     var age: Int,
     var gender: String,
     var height: Int,
-    var weight: BigDecimal
+    var weight: BigDecimal,
+    var password: String
 )

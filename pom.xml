@@ -85,6 +85,12 @@
             <artifactId>unirest-objectmapper-jackson</artifactId>
             <version>3.11.09</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -145,7 +151,7 @@
                 <artifactId>heroku-maven-plugin</artifactId>
                 <version>3.0.4</version>
                 <configuration>
-                    <jdkVersion>1.8</jdkVersion>
+                    <jdkVersion>11</jdkVersion>
                     <appName>health-tracker-20100299</appName>
                     <processTypes>
                         <!-- Tell Heroku how to launch your application -->

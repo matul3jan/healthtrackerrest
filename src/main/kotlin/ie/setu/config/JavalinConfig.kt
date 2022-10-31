@@ -1,6 +1,7 @@
 package ie.setu.config
 
 import ie.setu.api.Api.Companion.ApiFactory
+import ie.setu.config.Properties.getProperty
 import ie.setu.utils.JsonUtil.jsonObjectMapper
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.path
@@ -32,11 +33,14 @@ object JavalinConfig {
     private fun setup(config: JavalinConfig) {
 
         // Register OpenAPI Plugin
-        config.registerPlugin(openApiPlugin())
+        config.registerPlugin(openApiPlugin)
 
         // Register default Json serializer for Javalin and Unirest
         config.jsonMapper(JavalinJackson(jsonObjectMapper()))
         Unirest.config().objectMapper = JacksonObjectMapper(jsonObjectMapper())
+
+        // Register Authentication manager
+        config.accessManager(Auth::accessManager)
     }
 
     private fun registerRoutes(app: Javalin) {
@@ -57,7 +61,7 @@ object JavalinConfig {
         app.start(System.getenv("PORT")?.toInt() ?: 7001)
     }
 
-    private fun openApiPlugin() = OpenApiPlugin(
+    private val openApiPlugin = OpenApiPlugin(
         OpenApiOptions(
             Info().apply {
                 title = "Health Tracker REST App"
@@ -65,9 +69,9 @@ object JavalinConfig {
                 version = "1.0"
             }
         ).apply {
-            path = "/swagger-docs"                        // Swagger Json endpoint
-            swagger = SwaggerOptions("/swagger-ui") // Swagger UI endpoint
-            reDoc = ReDocOptions("/redoc")         //  Redoc endpoint
+            path = getProperty("swagger.docs.url")
+            swagger = SwaggerOptions(getProperty("swagger.ui.url"))
+            reDoc = ReDocOptions(getProperty("redoc.url"))
         }
     )
 }

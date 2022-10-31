@@ -1,6 +1,5 @@
 package ie.setu.api
 
-import ie.setu.config.DBConfig
 import ie.setu.domain.Activity
 import ie.setu.domain.Goal
 import ie.setu.domain.User
@@ -24,7 +23,13 @@ class GoalApiTest {
         @BeforeAll
         @JvmStatic
         internal fun setup() {
-            DBConfig.createDbConnection()
+            setBasicAuthForTests()
+        }
+
+        @AfterAll
+        @JvmStatic
+        internal fun teardown() {
+            clearBasicAuthForTests()
         }
     }
 
@@ -216,13 +221,19 @@ class GoalApiTest {
 
             val addedUser: User = jsonNodeToObject(userUtil.addUser())
 
-            val addedActivity1: Activity = jsonNodeToObject(activityUtil.addActivity(activities[0].copy(userId = addedUser.id)))
-            val addedActivity2: Activity = jsonNodeToObject(activityUtil.addActivity(activities[1].copy(userId = addedUser.id)))
-            val addedActivity3: Activity = jsonNodeToObject(activityUtil.addActivity(activities[2].copy(userId = addedUser.id)))
+            val addedActivity1: Activity =
+                jsonNodeToObject(activityUtil.addActivity(activities[0].copy(userId = addedUser.id)))
+            val addedActivity2: Activity =
+                jsonNodeToObject(activityUtil.addActivity(activities[1].copy(userId = addedUser.id)))
+            val addedActivity3: Activity =
+                jsonNodeToObject(activityUtil.addActivity(activities[2].copy(userId = addedUser.id)))
 
-            val addedGoalResponse1 = goalUtil.addGoal(goals[0].copy(userId = addedUser.id, activityId = addedActivity1.id))
-            val addedGoalResponse2 = goalUtil.addGoal(goals[1].copy(userId = addedUser.id, activityId = addedActivity2.id))
-            val addedGoalResponse3 = goalUtil.addGoal(goals[2].copy(userId = addedUser.id, activityId = addedActivity3.id))
+            val addedGoalResponse1 =
+                goalUtil.addGoal(goals[0].copy(userId = addedUser.id, activityId = addedActivity1.id))
+            val addedGoalResponse2 =
+                goalUtil.addGoal(goals[1].copy(userId = addedUser.id, activityId = addedActivity2.id))
+            val addedGoalResponse3 =
+                goalUtil.addGoal(goals[2].copy(userId = addedUser.id, activityId = addedActivity3.id))
 
             Assertions.assertEquals(201, addedGoalResponse1.status)
             Assertions.assertEquals(201, addedGoalResponse2.status)
