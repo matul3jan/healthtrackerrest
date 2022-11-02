@@ -154,4 +154,28 @@ class UserApiTest {
             assertEquals(404, util.retrieveUserById(addedUser.id).status)
         }
     }
+
+    @Nested
+    inner class UserStats {
+        @Test
+        fun `get user stats by id when user does not exist returns 404 response`() {
+            val retrieveResponse = util.retrieveUserStatsById(Integer.MIN_VALUE)
+            assertEquals(404, retrieveResponse.status)
+        }
+
+        @Test
+        fun `getting user stats by id when id exists, returns a 200 response`() {
+
+            // Add the user
+            val addResponse = util.addUser()
+            val addedUser: User = jsonToObject(addResponse.body.toString())
+
+            // Retrieve the added user from the database and verify return code
+            val retrieveResponse = util.retrieveUserStatsById(addedUser.id)
+            assertEquals(200, retrieveResponse.status)
+
+            // Restore the db to previous state by deleting the added user
+            util.deleteUser(addedUser.id)
+        }
+    }
 }

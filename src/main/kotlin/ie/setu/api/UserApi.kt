@@ -3,8 +3,10 @@ package ie.setu.api
 import ie.setu.config.Params.USER_EMAIL
 import ie.setu.config.Params.USER_ID
 import ie.setu.config.Role
+import ie.setu.controller.StatsController
 import ie.setu.controller.UserController
 import ie.setu.domain.User
+import ie.setu.domain.UserStats
 import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.apibuilder.ApiBuilder.path
 import io.javalin.apibuilder.EndpointGroup
@@ -33,6 +35,9 @@ object UserApi : Api {
                 path("/goals") {
                     get(GoalApi::getGoalsByUserId, Role.USER)
                     delete(GoalApi::deleteGoalByUserId, Role.USER)
+                }
+                path("/stats") {
+                    get(::getUserStats, Role.USER)
                 }
             }
             path("/email/{$USER_EMAIL}") {
@@ -99,4 +104,14 @@ object UserApi : Api {
         responses = [OpenApiResponse("204"), OpenApiResponse("404")]
     )
     private fun updateUser(ctx: Context) = UserController.updateUser(ctx)
+
+    @OpenApi(
+        tags = [tag],
+        path = "$apiPathUsers/{$USER_ID}/stats",
+        method = HttpMethod.GET,
+        summary = "Get user statistics by ID",
+        pathParams = [OpenApiParam(USER_ID, Int::class, "The user ID")],
+        responses = [OpenApiResponse("204", [OpenApiContent(UserStats::class)]), OpenApiResponse("404")]
+    )
+    private fun getUserStats(ctx: Context) = StatsController.getUserStats(ctx)
 }
