@@ -29,7 +29,7 @@ object StatsController {
     /**
      * Calculate fluid intake in cups based on weight and age.
      */
-    private fun calculateFluidIntake(user: User): Double {
+    fun calculateFluidIntake(user: User): Double {
         var weight = user.weight.toDouble()
         when {
             user.age < 30 -> weight *= 40
@@ -44,7 +44,7 @@ object StatsController {
      * w : weight in kilogram
      * h : height in metre
      */
-    private fun calculateBmi(user: User): Double {
+    fun calculateBmi(user: User): Double {
         val weight = user.weight.toDouble()
         val height = user.height * 0.01 // convert from centimetre to metre
         return weight / (height * height)
@@ -53,7 +53,7 @@ object StatsController {
     /**
      * Calculate ideal body weight in kg using Devine formula
      */
-    private fun calculateIdealWeight(user: User): Double {
+    fun calculateIdealWeight(user: User): Double {
         val threshold = 152.4
         val height = user.height
         val extraCms = if (height > threshold) height - threshold else 0.0
