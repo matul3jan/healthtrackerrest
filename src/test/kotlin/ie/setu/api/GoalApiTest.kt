@@ -95,6 +95,22 @@ class GoalApiTest {
             Assertions.assertEquals(204, activityUtil.deleteByActivityId(addedActivity.id).status)
             Assertions.assertEquals(204, userUtil.deleteUser(addedUser.id).status)
         }
+
+        @Test
+        fun `get goal by activity id when user and goal exists returns 200 response`() {
+
+            val addedUser: User = jsonNodeToObject(userUtil.addUser())
+            val activity = activities[0].copy(userId = addedUser.id)
+            val addedActivity: Activity = jsonNodeToObject(activityUtil.addActivity(activity))
+
+            goalUtil.addGoal(goals[0].copy(userId = addedUser.id, activityId = addedActivity.id))
+
+            val response = goalUtil.retrieveByActivityId(addedActivity.id)
+            Assertions.assertEquals(200, response.status)
+
+            Assertions.assertEquals(204, activityUtil.deleteByActivityId(addedActivity.id).status)
+            Assertions.assertEquals(204, userUtil.deleteUser(addedUser.id).status)
+        }
     }
 
     @Nested

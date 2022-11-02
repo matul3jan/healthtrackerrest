@@ -3,19 +3,14 @@ package ie.setu.repository
 import ie.setu.domain.User
 import ie.setu.domain.db.Users
 import ie.setu.domain.repository.UserDAO
-import ie.setu.helpers.connectTempDatabase
-import ie.setu.helpers.nonExistingEmail
-import ie.setu.helpers.populateUserTable
-import ie.setu.helpers.users
+import ie.setu.helpers.*
 import ie.setu.utils.checkPassword
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.fail
 import java.math.BigDecimal
 import kotlin.test.assertTrue
 
@@ -24,13 +19,22 @@ private val user1 = users[0]
 private val user2 = users[1]
 private val user3 = users[2]
 
+
 class UserDAOTest {
 
     companion object {
+        private lateinit var db: Database
+
         @BeforeAll
         @JvmStatic
         internal fun setup() {
-            connectTempDatabase()
+            db = connectTempDatabase()
+        }
+
+        @AfterAll
+        @JvmStatic
+        internal fun tearDown() {
+            disconnectTempDatabase(db)
         }
     }
 

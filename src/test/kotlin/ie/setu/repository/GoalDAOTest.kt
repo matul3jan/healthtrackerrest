@@ -4,8 +4,10 @@ import ie.setu.domain.Goal
 import ie.setu.domain.db.Goals
 import ie.setu.domain.repository.GoalDAO
 import ie.setu.helpers.*
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
@@ -19,10 +21,18 @@ private val goal3 = goals[2]
 class GoalDAOTest {
 
     companion object {
+        private lateinit var db: Database
+
         @BeforeAll
         @JvmStatic
         internal fun setup() {
-            connectTempDatabase()
+            db = connectTempDatabase()
+        }
+
+        @AfterAll
+        @JvmStatic
+        internal fun tearDown() {
+            disconnectTempDatabase(db)
         }
     }
 
