@@ -1,9 +1,10 @@
 package ie.setu.api
 
 import ie.setu.domain.User
+import ie.setu.domain.UserStats
 import ie.setu.helpers.*
 import ie.setu.util.UserUtil
-import ie.setu.utils.JsonUtil.jsonToObject
+import ie.setu.utils.JsonUtil.jsonNodeToObject
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 
@@ -53,7 +54,7 @@ class UserApiTest {
 
             // Add the user
             val addResponse = util.addUser()
-            val addedUser: User = jsonToObject(addResponse.body.toString())
+            val addedUser: User = jsonNodeToObject(addResponse)
 
             // Retrieve the added user from the database and verify return code
             val retrieveResponse = util.retrieveUserById(addedUser.id)
@@ -74,7 +75,7 @@ class UserApiTest {
             assertEquals(200, retrieveResponse.status)
 
             // Restore the db to previous state by deleting the added user
-            val retrievedUser: User = jsonToObject(retrieveResponse.body.toString())
+            val retrievedUser: User = jsonNodeToObject(retrieveResponse)
             util.deleteUser(retrievedUser.id)
         }
     }
@@ -93,7 +94,7 @@ class UserApiTest {
             assertEquals(200, retrieveResponse.status)
 
             // Verify the contents of the retrieved user
-            val retrievedUser: User = jsonToObject(addResponse.body.toString())
+            val retrievedUser: User = jsonNodeToObject(addResponse)
             assertEquals(validEmail, retrievedUser.email)
             assertEquals(validName, retrievedUser.name)
 
@@ -112,14 +113,14 @@ class UserApiTest {
             val updatedName = "Updated Name"
             val updatedEmail = "Updated Email"
             val addedResponse = util.addUser()
-            val addedUser: User = jsonToObject(addedResponse.body.toString())
+            val addedUser: User = jsonNodeToObject(addedResponse)
 
             // Update the email and name of the retrieved user and assert 204 is returned
             assertEquals(204, util.updateUser(addedUser.id).status)
 
             // Retrieve updated user and assert details are correct
             val updatedUserResponse = util.retrieveUserById(addedUser.id)
-            val updatedUser: User = jsonToObject(updatedUserResponse.body.toString())
+            val updatedUser: User = jsonNodeToObject(updatedUserResponse)
             assertEquals(updatedName, updatedUser.name)
             assertEquals(updatedEmail, updatedUser.email)
 
@@ -145,13 +146,42 @@ class UserApiTest {
 
             // Add the user that we plan to do delete on
             val addedResponse = util.addUser()
-            val addedUser: User = jsonToObject(addedResponse.body.toString())
+            val addedUser: User = jsonNodeToObject(addedResponse)
 
             // Delete the added user and assert a 204 is returned
             assertEquals(204, util.deleteUser(addedUser.id).status)
 
             // Attempt to retrieve the deleted user --> 404 response
             assertEquals(404, util.retrieveUserById(addedUser.id).status)
+        }
+    }
+
+    @Nested
+    inner class UserStatistics {
+        @Test
+        fun `get user stats by id when user does not exist returns 404 response`() {
+            val retrieveResponse = util.retrieveUserStatsById(Integer.MIN_VALUE)
+            assertEquals(404, retrieveResponse.status)
+        }
+
+        @Test
+        fun `getting user stats by id when id exists, returns a 200 response`() {
+
+            // Add the user
+            val addResponse = util.addUser()
+            val addedUser: User = jsonNodeToObject(addResponse)
+
+            // Retrieve the added user from the database and verify return code
+            val retrieveResponse = util.retrieveUserStatsById(addedUser.id)
+            assertEquals(200, retrieveResponse.status)
+
+            val stats: UserStats = jsonNodeToObject(retrieveResponse)
+            assertEquals("20.25", stats.bmi)
+            assertEquals("11.59", stats.fluidIntake)
+            assertEquals("74.99", stats.idealWeight)
+
+            // Restore the db to previous state by deleting the added user
+            util.deleteUser(addedUser.id)
         }
     }
 }

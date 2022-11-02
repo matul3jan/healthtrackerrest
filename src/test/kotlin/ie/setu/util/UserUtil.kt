@@ -23,4 +23,6 @@ class UserUtil(origin: String) {
     fun updateUser(id: Int): HttpResponse<JsonNode> = Unirest.patch("$path/$id").body(updatedUser).asJson()
 
     fun deleteUser(id: Int): HttpResponse<JsonNode> = Unirest.delete("$path/$id").asJson()
+
+    fun retrieveUserStatsById(id: Int): HttpResponse<JsonNode> = Unirest.get("$path/$id/stats").asJson()
 }
