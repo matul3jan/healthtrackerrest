@@ -3,13 +3,12 @@ package ie.setu.repository
 import ie.setu.domain.Activity
 import ie.setu.domain.db.Activities
 import ie.setu.domain.repository.ActivityDAO
-import ie.setu.helpers.activities
-import ie.setu.helpers.connectTempDatabase
-import ie.setu.helpers.populateActivityTable
-import ie.setu.helpers.populateUserTable
+import ie.setu.helpers.*
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
@@ -23,10 +22,18 @@ private val activity3 = activities[2]
 class ActivityDAOTest {
 
     companion object {
+        private lateinit var db: Database
+
         @BeforeAll
         @JvmStatic
         internal fun setup() {
-            connectTempDatabase()
+            db = connectTempDatabase()
+        }
+
+        @AfterAll
+        @JvmStatic
+        internal fun tearDown() {
+            disconnectTempDatabase(db)
         }
     }
 

@@ -14,6 +14,8 @@ import kong.unirest.Unirest
 import okhttp3.internal.immutableListOf
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.TransactionManager
+import org.jetbrains.exposed.sql.transactions.transactionManager
 import org.joda.time.DateTime
 import java.math.BigDecimal
 
@@ -46,8 +48,13 @@ const val updatedTarget = 10.0
 const val updatedCurrent = 8.0
 const val updatedUnit = "minutes"
 
-fun connectTempDatabase() {
-    Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver", user = "root", password = "")
+fun connectTempDatabase(): Database {
+    return Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver", user = "root", password = "")
+}
+
+fun disconnectTempDatabase(db: Database) {
+    TransactionManager.resetCurrent(db.transactionManager)
+    TransactionManager.closeAndUnregister(db)
 }
 
 fun setBasicAuthForTests() {

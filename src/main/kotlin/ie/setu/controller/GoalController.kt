@@ -39,15 +39,10 @@ object GoalController {
     }
 
     fun getGoalsByActivityId(ctx: Context) {
-        val activityId = parseActivityId(ctx)
-        if (ActivityDAO.findById(activityId) != null) {
-            val goal = GoalDAO.findByActivityId(activityId)
-            if (goal != null) {
-                ctx.status(200)
-                ctx.json(goal)
-            } else {
-                ctx.status(404)
-            }
+        val goal = GoalDAO.findByActivityId(parseActivityId(ctx))
+        if (goal != null) {
+            ctx.status(200)
+            ctx.json(goal)
         } else {
             ctx.status(404)
         }
