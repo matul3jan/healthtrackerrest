@@ -33,8 +33,13 @@ object Auth {
     }
 
     private val Context.userRoles: List<Role>
-        get() = this.basicAuthCredentials().let { (username, password) ->
-            roles[Pair(username, password)] ?: listOf()
+        get() {
+            if (this.basicAuthCredentialsExist()) {
+                return this.basicAuthCredentials().let { (username, password) ->
+                    roles[Pair(username, password)] ?: listOf()
+                }
+            }
+            return listOf()
         }
 
     private fun fetchRoles(): Map<Pair<String, String>, List<Role>> {
