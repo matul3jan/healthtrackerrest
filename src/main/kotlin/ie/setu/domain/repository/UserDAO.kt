@@ -3,8 +3,8 @@ package ie.setu.domain.repository
 import ie.setu.config.Auth
 import ie.setu.domain.User
 import ie.setu.domain.db.Users
-import ie.setu.utils.DBUtil.hashPassword
-import ie.setu.utils.DBUtil.mapToUser
+import ie.setu.utils.hashPassword
+import ie.setu.utils.mapToUser
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
