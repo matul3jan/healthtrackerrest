@@ -2,7 +2,7 @@ package ie.setu.domain.repository
 
 import ie.setu.domain.Goal
 import ie.setu.domain.db.Goals
-import ie.setu.utils.mapToGoal
+import ie.setu.utils.DBUtil.mapToGoal
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
