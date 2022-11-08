@@ -8,7 +8,7 @@ CREATE TABLE users
     height INTEGER,
     weight DECIMAL,
     password varchar(255) NOT NULL
-)
+);
 
 CREATE TABLE activities
 (
@@ -18,7 +18,7 @@ CREATE TABLE activities
     calories    INTEGER,
     started     TIMESTAMP,
     user_id     SERIAL       NOT NULL references USERS (id) ON DELETE CASCADE
-)
+);
 
 CREATE TABLE goals
 (
@@ -28,4 +28,4 @@ CREATE TABLE goals
     target      DECIMAL,
     user_id     SERIAL      NOT NULL references USERS (id) ON DELETE CASCADE,
     activity_id SERIAL      NOT NULL references ACTIVITIES (id) ON DELETE CASCADE
-)
+);
