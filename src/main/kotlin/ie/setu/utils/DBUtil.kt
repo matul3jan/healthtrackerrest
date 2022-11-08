@@ -7,7 +7,6 @@ import ie.setu.domain.db.Activities
 import ie.setu.domain.db.Goals
 import ie.setu.domain.db.Users
 import org.jetbrains.exposed.sql.ResultRow
-import org.mindrot.BCrypt
 
 fun mapToUser(it: ResultRow) = User(
     id = it[Users.id],
@@ -38,6 +37,6 @@ fun mapToGoal(it: ResultRow) = Goal(
     activityId = it[Goals.activityId]
 )
 
-fun hashPassword(password: String): String = BCrypt.hashpw(password, BCrypt.gensalt())
+fun hashPassword(password: String): String = org.mindrot.BCrypt.hashpw(password, org.mindrot.BCrypt.gensalt())
 
-fun checkPassword(candidate: String, hashed: String): Boolean = BCrypt.checkpw(candidate, hashed)
+fun checkPassword(candidate: String, hashed: String): Boolean = org.mindrot.BCrypt.checkpw(candidate, hashed)
