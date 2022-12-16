@@ -149,7 +149,6 @@
                         <include>Test*</include>
                         <include>*Test</include>
                     </includes>
-                    <argLine>--enable-preview</argLine>
                 </configuration>
             </plugin>
             <!-- JaCoCo Maven plugin for code coverage -->
