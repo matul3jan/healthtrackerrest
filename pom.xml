@@ -114,7 +114,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Heroku's assembly plugin -->
+            <!-- Maven assembly plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -137,20 +137,6 @@
                             <mainClass>ie.setu.AppKt</mainClass>
                         </manifest>
                     </archive>
-                </configuration>
-            </plugin>
-            <!-- Heroku SDK plugin -->
-            <plugin>
-                <groupId>com.heroku.sdk</groupId>
-                <artifactId>heroku-maven-plugin</artifactId>
-                <version>3.0.4</version>
-                <configuration>
-                    <jdkVersion>11</jdkVersion>
-                    <appName>health-tracker-20100299</appName>
-                    <processTypes>
-                        <!-- Tell Heroku how to launch your application -->
-                        <web>java -jar ./target/healthtrackerrest-1.0-jar-with-dependencies.jar</web>
-                    </processTypes>
                 </configuration>
             </plugin>
             <!-- surefire plugin MOJO - for testing during maven lifecycle-->
