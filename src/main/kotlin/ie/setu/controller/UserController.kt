@@ -2,6 +2,7 @@ package ie.setu.controller
 
 import ie.setu.config.Params.parseUserEmail
 import ie.setu.config.Params.parseUserId
+import ie.setu.config.Properties.getProperty
 import ie.setu.domain.User
 import ie.setu.domain.repository.UserDAO
 import ie.setu.utils.JsonUtil.jsonToObject
@@ -57,6 +58,16 @@ object UserController {
         if (id != 0) {
             ctx.status(204)
             ctx.json(newUser)
+        } else {
+            ctx.status(404)
+        }
+    }
+
+    fun loginUser(ctx: Context) {
+        val user: User = jsonToObject(ctx.body())
+        if (UserDAO.verifyUser(user)) {
+            ctx.status(200)
+            ctx.json(getProperty("jwt.token"))
         } else {
             ctx.status(404)
         }

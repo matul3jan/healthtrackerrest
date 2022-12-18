@@ -3,6 +3,7 @@ package ie.setu.domain.repository
 import ie.setu.config.Auth
 import ie.setu.domain.User
 import ie.setu.domain.db.Users
+import ie.setu.utils.checkPassword
 import ie.setu.utils.hashPassword
 import ie.setu.utils.mapToUser
 import org.jetbrains.exposed.sql.*
@@ -57,5 +58,13 @@ object UserDAO {
             it[weight] = user.weight
             it[password] = hashPassword(user.password)
         }
+    }
+
+    fun verifyUser(user: User): Boolean {
+        val userFound = findByEmail(user.email)
+        if (userFound != null) {
+            return checkPassword(user.password, userFound.password)
+        }
+        return false
     }
 }
