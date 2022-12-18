@@ -43,6 +43,9 @@ object UserApi : Api {
             path("/email/{$USER_EMAIL}") {
                 get(::getUserByEmail)
             }
+            path("/check") {
+                post(::loginUser, Role.ANYONE)
+            }
         }
     }
 
@@ -114,4 +117,14 @@ object UserApi : Api {
         responses = [OpenApiResponse("204", [OpenApiContent(UserStats::class)]), OpenApiResponse("404")]
     )
     private fun getUserStats(ctx: Context) = StatsController.getUserStats(ctx)
+
+    @OpenApi(
+        tags = [tag],
+        path = "$apiPathUsers/check",
+        method = HttpMethod.POST,
+        summary = "Check User",
+        requestBody = OpenApiRequestBody([OpenApiContent(User::class)]),
+        responses = [OpenApiResponse("200"), OpenApiResponse("404")]
+    )
+    private fun loginUser(ctx: Context) = UserController.loginUser(ctx)
 }
