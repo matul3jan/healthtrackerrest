@@ -2,6 +2,7 @@ package ie.setu.config
 
 import ie.setu.config.Properties.getProperty
 import ie.setu.domain.repository.UserDAO
+import ie.setu.utils.checkPassword
 import io.javalin.core.security.RouteRole
 import io.javalin.core.util.Header
 import io.javalin.http.Context
@@ -36,7 +37,14 @@ object Auth {
         get() {
             if (this.basicAuthCredentialsExist()) {
                 return this.basicAuthCredentials().let { (username, password) ->
-                    roles[Pair(username, password)] ?: listOf()
+                    roles.keys.forEach { pair ->
+                        if (pair.first == username) {
+                            if (password == pair.second || checkPassword(password, pair.second)) {
+                                return roles[pair] ?: listOf()
+                            }
+                        }
+                    }
+                    listOf()
                 }
             }
             return listOf()

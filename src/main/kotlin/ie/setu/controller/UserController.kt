@@ -65,9 +65,10 @@ object UserController {
 
     fun loginUser(ctx: Context) {
         val user: User = jsonToObject(ctx.body())
-        if (UserDAO.verifyUser(user)) {
+        val id = UserDAO.verifyUser(user)
+        if (id != -1) {
             ctx.status(200)
-            ctx.json(getProperty("jwt.token"))
+            ctx.json("""{"id":$id,"token":"${getProperty("jwt.token")}"}""")
         } else {
             ctx.status(404)
         }

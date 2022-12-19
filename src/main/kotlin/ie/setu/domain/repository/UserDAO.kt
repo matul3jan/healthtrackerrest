@@ -60,11 +60,11 @@ object UserDAO {
         }
     }
 
-    fun verifyUser(user: User): Boolean {
+    fun verifyUser(user: User): Int {
         val userFound = findByEmail(user.email)
-        if (userFound != null) {
-            return checkPassword(user.password, userFound.password)
+        if (userFound != null && checkPassword(user.password, userFound.password)) {
+            return userFound.id
         }
-        return false
+        return -1
     }
 }
