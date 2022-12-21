@@ -2,6 +2,7 @@ package ie.setu.repository
 
 import ie.setu.domain.Activity
 import ie.setu.domain.db.Activities
+import ie.setu.domain.db.Goals
 import ie.setu.domain.repository.ActivityDAO
 import ie.setu.helpers.*
 import org.jetbrains.exposed.sql.Database
@@ -121,6 +122,7 @@ class ActivityDAOTest {
             transaction {
                 populateUserTable()
                 populateActivityTable()
+                SchemaUtils.create(Goals)
                 val activity3updated = Activity(
                     id = 3, description = "Cardio", duration = 42.0,
                     calories = 220, started = DateTime.now(), userId = 2

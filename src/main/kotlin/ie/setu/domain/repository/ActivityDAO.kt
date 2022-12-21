@@ -33,12 +33,15 @@ object ActivityDAO {
         } get Activities.id
     }
 
-    fun update(id: Int, activity: Activity): Int = transaction {
-        Activities.update({ Activities.id eq id }) {
-            it[description] = activity.description
-            it[duration] = activity.duration
-            it[started] = activity.started
-            it[calories] = activity.calories
+    fun update(id: Int, activity: Activity): Int {
+        updateGoals(findById(id), activity)
+        return transaction {
+            Activities.update({ Activities.id eq id }) {
+                it[description] = activity.description
+                it[duration] = activity.duration
+                it[started] = activity.started
+                it[calories] = activity.calories
+            }
         }
     }
 
@@ -51,6 +54,18 @@ object ActivityDAO {
     fun deleteAllForUser(id: Int): Int = transaction {
         Activities.deleteWhere {
             Activities.userId eq id
+        }
+    }
+
+    private fun updateGoals(oldActivity: Activity?, newActivity: Activity) {
+        if (oldActivity != null) {
+            val goals = GoalDAO.findByUserId(oldActivity.userId)
+            goals.filter { it.activityId == oldActivity.id }.forEach {
+                GoalDAO.update(
+                    it.id,
+                    it.copy(current = it.current + (newActivity.duration - oldActivity.duration))
+                )
+            }
         }
     }
 }
