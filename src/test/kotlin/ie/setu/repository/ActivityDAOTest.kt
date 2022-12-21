@@ -121,6 +121,7 @@ class ActivityDAOTest {
             transaction {
                 populateUserTable()
                 populateActivityTable()
+                populateGoalsTable()
                 val activity3updated = Activity(
                     id = 3, description = "Cardio", duration = 42.0,
                     calories = 220, started = DateTime.now(), userId = 2
@@ -135,6 +136,7 @@ class ActivityDAOTest {
             transaction {
                 populateUserTable()
                 populateActivityTable()
+                populateGoalsTable()
                 val activity4updated = Activity(
                     id = 4, description = "Cardio", duration = 42.0,
                     calories = 220, started = DateTime.now(), userId = 2
