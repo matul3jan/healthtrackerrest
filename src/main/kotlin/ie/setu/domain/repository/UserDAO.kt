@@ -56,15 +56,14 @@ object UserDAO {
             it[gender] = user.gender
             it[height] = user.height
             it[weight] = user.weight
-            it[password] = hashPassword(user.password)
         }
     }
 
-    fun verifyUser(user: User): Int {
+    fun verifyUser(user: User): User? {
         val userFound = findByEmail(user.email)
         if (userFound != null && checkPassword(user.password, userFound.password)) {
-            return userFound.id
+            return userFound
         }
-        return -1
+        return null
     }
 }

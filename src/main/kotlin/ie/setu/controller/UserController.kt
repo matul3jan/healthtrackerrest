@@ -2,7 +2,6 @@ package ie.setu.controller
 
 import ie.setu.config.Params.parseUserEmail
 import ie.setu.config.Params.parseUserId
-import ie.setu.config.Properties.getProperty
 import ie.setu.domain.User
 import ie.setu.domain.repository.UserDAO
 import ie.setu.utils.JsonUtil.jsonToObject
@@ -65,10 +64,10 @@ object UserController {
 
     fun loginUser(ctx: Context) {
         val user: User = jsonToObject(ctx.body())
-        val id = UserDAO.verifyUser(user)
-        if (id != -1) {
+        val userFound = UserDAO.verifyUser(user)
+        if (userFound != null) {
             ctx.status(200)
-            ctx.json("""{"id":$id,"token":"${getProperty("jwt.token")}"}""")
+            ctx.json(userFound)
         } else {
             ctx.status(404)
         }

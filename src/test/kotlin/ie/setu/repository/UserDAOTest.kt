@@ -4,7 +4,6 @@ import ie.setu.domain.User
 import ie.setu.domain.db.Users
 import ie.setu.domain.repository.UserDAO
 import ie.setu.helpers.*
-import ie.setu.utils.checkPassword
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -181,7 +180,6 @@ class UserDAOTest {
             assertEquals(expected.gender, actual.gender)
             assertEquals(expected.height, actual.height)
             assertEquals(expected.weight.toDouble(), actual.weight.toDouble(), 0.1)
-            assertTrue(checkPassword(expected.password, actual.password))
         }
     }
 }
