@@ -52,6 +52,11 @@ jobs:
           cache: 'maven'
       - name: Maven Verify
         run: mvn -B clean verify
+      - name: Test coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: Jacoco test coverage
+          path: target/site/jacoco
 
   deploy:
     name: Railway Deploy
